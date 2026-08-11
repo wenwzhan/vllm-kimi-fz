@@ -1,0 +1,3 @@
+#!/bin/sh
+
+export VLLM_CI_ONLY_STEP_KEYS='["image-build","kernels-mamba-test","language-models-test-extended-generation"]'
