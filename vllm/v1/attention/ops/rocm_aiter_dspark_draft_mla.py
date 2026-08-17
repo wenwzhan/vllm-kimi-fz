@@ -8,7 +8,7 @@ flattening the block to one decode row per query token, which makes each row
 re-read the whole KV span -- ``query_len`` times the traffic. This kernel keeps
 the block folded into a single workgroup tile and reads the span once.
 
-The kernel itself lives in aiter (``module_kimi_h40_draft``), which also owns
+The kernel itself lives in aiter (``dspark_draft_mla_decode``), which also owns
 the split count, the row tile and the partial-accumulator workspace. Those were
 duplicated here while the kernel was vendored into vLLM; keeping one copy means
 the two cannot drift, and drift is not benign -- the workspace has to be sized
@@ -92,11 +92,11 @@ def dspark_draft_mla_decode(
         return False
 
     try:
-        from aiter import kimi_h40_draft_mla_decode
+        from aiter import dspark_draft_mla_decode as _decode
     except ImportError:
         return False
 
-    kimi_h40_draft_mla_decode(
+    _decode(
         q,
         kv_cache,
         out,
